@@ -76,6 +76,6 @@ keybind = cmd+shift+j=write_scrollback_file:copy
 keybind = cmd+shift+k=text:nvim "$(pbpaste)"\r
 
 # Make font size changes apply to all surfaces
-keybind = all:cmd+equal=increase_font_size:1
-keybind = all:cmd+minus=decrease_font_size:1
-keybind = all:cmd+zero=reset_font_size
+# keybind = all:cmd+equal=increase_font_size:1
+# keybind = all:cmd+minus=decrease_font_size:1
+# keybind = all:cmd+zero=reset_font_size
