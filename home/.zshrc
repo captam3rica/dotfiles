@@ -185,21 +185,6 @@ source "${colorls_gem:h}/tab_complete.sh"
 # shellcheck source=${HOME}/.p10k.zs
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Update tab title with git branch/worktree info
-function set_ghostty_tab_title() {
-    local branch
-    branch=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null)
-
-    if [[ -n "$branch" ]]; then
-        printf "\e]2;%s  %s\a" "${PWD/#$HOME/~}" "$branch"
-    else
-        printf "\e]2;%s\a" "${PWD/#$HOME/~}"
-    fi
-}
-
-# Run before each prompt
-precmd_functions+=(set_ghostty_tab_title)
-
 # zshes
 alias myzshrc="nvim ~/.zshrc"
 alias myzshenv="nvim ~/.zshenv"
@@ -241,13 +226,7 @@ alias gsc='git switch --create'
 
 # uv
 alias uvp="uv run --with poethepoet poe"
-alias aaadderall="uv run \${HOME}/dev/internal-sys-eng-scripts/auto_apps_bootstrap/aaadderall.py"
-alias baart="uv run --project \${HOME}/dev/internal-sys-eng-scripts/baart/src/baart baart"
-alias lit="uv run \${HOME}/dev/internal-sys-eng-scripts/library_items_tool/lit.py"
 bindkey -e
-
-# tmux
-alias start-dev="\${HOME}/.config/zsh/functions/start-dev"
 
 # worktrunk
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
