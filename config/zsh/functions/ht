@@ -2,13 +2,25 @@
 #
 # Inside a Git repository, also create a branch + worktree of the same name via
 # Worktrunk (honoring its `worktree-path` config) and land the new tab in that
-# checkout.
+# checkout. `--base <branch>` (or `-b <branch>`) is passed through to
+# `wt switch --create` to branch from something other than the default branch.
 #
-# Usage: ht <name>   (name must be git-safe: no spaces)
+# Usage: ht <name> [--base <branch>]   (name must be git-safe: no spaces)
 ht() {
-  local name="${1:?usage: ht <name>}"
-  local out pane_id
+  local -A opts
+  local name="" base="" arg
 
+  zparseopts -D -E -A opts b: -base: || return 1
+  base="${opts[--base]:-${opts[-b]}}"
+
+  # zparseopts leaves unknown options in "$@", so reject anything that looks like one
+  for arg in "$@"; do
+    [[ "$arg" == -* ]] && { echo "ht: unknown option: $arg" >&2; return 1; }
+  done
+  (( $# == 1 )) || { echo "usage: ht <name> [--base <branch>]" >&2; return 1; }
+  name="$1"
+
+  local out pane_id
   out="$(herdr tab create --label "$name" --focus)"
   pane_id="$(printf '%s' "$out" | jq -r '.result.root_pane.pane_id')"
   if [[ -z "$pane_id" || "$pane_id" == "null" ]]; then
@@ -17,6 +29,8 @@ ht() {
   fi
 
   if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-    herdr pane run "$pane_id" "wt switch --create $name --yes"
+    local cmd="wt switch --create $name --yes"
+    [[ -n "$base" ]] && cmd+=" --base $base"
+    herdr pane run "$pane_id" "$cmd"
   fi
 }
