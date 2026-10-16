@@ -1,0 +1,22 @@
+# ht — open a Herdr tab named <name>.
+#
+# Inside a Git repository, also create a branch + worktree of the same name via
+# Worktrunk (honoring its `worktree-path` config) and land the new tab in that
+# checkout.
+#
+# Usage: ht <name>   (name must be git-safe: no spaces)
+ht() {
+  local name="${1:?usage: ht <name>}"
+  local out pane_id
+
+  out="$(herdr tab create --label "$name" --focus)"
+  pane_id="$(printf '%s' "$out" | jq -r '.result.root_pane.pane_id')"
+  if [[ -z "$pane_id" || "$pane_id" == "null" ]]; then
+    echo "ht: could not create Herdr tab (is Herdr running?)" >&2
+    return 1
+  fi
+
+  if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    herdr pane run "$pane_id" "wt switch --create $name --yes"
+  fi
+}
