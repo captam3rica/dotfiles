@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 # ht — open a Herdr tab named <name>.
 #
 # Inside a Git repository, also create a branch + worktree of the same name via
