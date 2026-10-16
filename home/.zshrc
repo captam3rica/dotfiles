@@ -254,7 +254,11 @@ if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)
 alias wts="wt switch"
 alias wtc="wt step commit"
 alias wtca="wt step commit --stage all"
-alias wtl="wt list"
+alias wtl="wt list --full"
+alias gpsuoo="git push --set-upstream origin $(git branch --show-current) && openbranch"
+
+# herdr + worktrunk: open a tab, plus branch/worktree when inside a repo
+source "${HOME}/.config/zsh/functions/ht"
 
 alias claudeusage='npx ccusage@latest claude daily'
 alias getclaude='if claude update | grep -q "up to date"; then echo "Claude up to date"; else curl -fsSL https://claude.ai/install.sh | bash; fi'
