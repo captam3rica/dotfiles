@@ -1,6 +1,3 @@
-# global exports
-export PATH="/usr/local/sbin:$PATH"
-
 # uv
 export PATH="$HOME/.local/bin:$PATH"
 
@@ -9,6 +6,9 @@ export PATH="/opt/homebrew/bin:$PATH"
 
 # ruby path
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+
+# global exports
+export PATH="/usr/local/sbin:$PATH"
 
 if [[ -f /usr/bin/nvim ]]; then
     export EDITOR="/usr/bin/nvim"
